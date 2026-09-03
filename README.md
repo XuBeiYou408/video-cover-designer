@@ -8,55 +8,34 @@
 
 ```mermaid
 flowchart TD
-    %% 阶段 1
-    subgraph Stage1 [【阶段一】多源输入感知]
-        In1[输入 A: 实拍人像 / 硬件物件 + 视频脚本文案]
-        In2[输入 B: 纯新闻报道 / 博客评测链接 URL]
-    end
+    A["【第一阶段】多源输入感知<br>• 输入方式 A: 实拍人像 / 硬件物件 + 视频脚本文案<br>• 输入方式 B: 纯新闻报道 / 博客评测链接 URL"]
+    --> B{"【第二阶段】四大引擎自适应路由"}
 
-    %% 阶段 2
-    subgraph Stage2 [【阶段二】四大引擎自适应路由]
-        Router{智能分析内容类型}
-        E1[🎮 博主秋芝隐喻流: 1.3x大头 + 剧情换装 + 电光黄字]
-        E2[🛠️ 微机硬核实测流: 50期参数锁定 + 毛玻璃 + 拆解印章]
-        E3[🎙️ 电影深度社论流: ⚠️ 人像0篡改 + 伦勃朗光 + 金句双引号]
-        E4[📊 数据报道破局流: 3D破顶柱状图 / 悬浮星核 / 突发红印]
-    end
+    B --> C1["🎮 博主秋芝隐喻流<br>1.3x大头透视 + 剧情换装 + 3D道具 + 电光黄字"]
+    B --> C2["🛠️ 微机硬核实测流<br>50期样本参数锁定 + 毛玻璃横幅 + 拆解印章"]
+    B --> C3["🎙️ 电影深度社论流<br>⚠️ 人像0篡改 + 伦勃朗光影 + 金句双引号"]
+    B --> C4["📊 数据报道破局流<br>3D破顶柱状图 / 悬浮科技星核 / 突发绝密红印"]
 
-    %% 阶段 3
-    subgraph Stage3 [【阶段三】确认制省流提案 节省67%额度]
-        Propose[推导 2~3 组高张力创意方案]
-        Wireframe[⚠️ 强制 1:1 附带原子化 ASCII 结构排版线框图]
-    end
+    C1 --> D["【第三阶段】确认制省流提案 (节省67%额度)<br>推导 2~3 组高张力方案 + 强制 1:1 专属 ASCII 排版线框图"]
+    C2 --> D
+    C3 --> D
+    C4 --> D
 
-    %% 阶段 4
-    subgraph Stage4 [【阶段四】用户决策与画幅重构]
-        UserChoice[用户选定方案 A/B/C 并确认修改意见]
-        Ratio[指定平台画幅: 16:9 / 4:3 / 3:4 避让右下角时长码]
-    end
+    D --> E["【第四阶段】用户决策与画幅定制<br>选定方案 + 设定 16:9 / 4:3 / 3:4 比例 (严格避让时长码)"]
 
-    %% 阶段 5
-    subgraph Stage5 [【阶段五】双轨环境适配交付]
-        Branch{当前 Agent 宿主环境能力}
-        NativeGen[【本地生图】仅消耗 1 次额度精准渲染成品图]
-        UniversalPrompt[【通用导出】输出全通用自然语言 Prompt<br>可直接复制到网页版 ChatGPT / 即梦等生成]
-    end
+    E --> F{"【第五阶段】宿主环境能力判定"}
+    F -->|具备生图工具| G["【本地高保真出图】<br>仅消耗 1 次额度精准渲染成品图"]
+    F -->|纯文本 / 额度耗尽| H["【单一通用提示词导出】<br>ChatGPT 网页版 / Midjourney / 即梦 直拷通用 Prompt"]
 
-    %% 流程连接
-    In1 & In2 --> Router
-    Router -->|消费AI/日常教程| E1
-    Router -->|硬件/芯片/拆解| E2
-    Router -->|深度访谈/播客对白| E3
-    Router -->|无图/纯报道/跑分数据| E4
-    
-    E1 & E2 & E3 & E4 --> Propose --> Wireframe
-    Wireframe --> UserChoice --> Ratio --> Branch
-    Branch -->|具备生图工具| NativeGen
-    Branch -->|纯文本/网页端模型| UniversalPrompt
+    classDef stage fill:#1E293B,stroke:#475569,color:#F8FAFC,stroke-width:1.5px;
+    classDef decision fill:#0F766E,stroke:#14B8A6,color:#FFFFFF,stroke-width:2px;
+    classDef engine fill:#1E1B4B,stroke:#6366F1,color:#EEF2FF,stroke-width:1.5px;
+    classDef output fill:#064E3B,stroke:#10B981,color:#ECFDF5,stroke-width:1.5px;
 
-    classDef default fill:#1E293B,stroke:#475569,color:#F8FAFC,stroke-width:1.5px;
-    classDef highlight fill:#0F766E,stroke:#14B8A6,color:#FFFFFF,stroke-width:2px;
-    class Stage2,Stage3,Stage5 highlight;
+    class A,D,E stage;
+    class B,F decision;
+    class C1,C2,C3,C4 engine;
+    class G,H output;
 ```
 
 ---
