@@ -1,4 +1,4 @@
-#  Viral Video Cover Designer (视频封面设计引擎)
+#  Video Cover Designer (视频封面设计引擎)
 
 这是一个为 Antigravity / Claude Code / Cursor / Agent 生态打造的**科技信息品类、高点击率视频封面生成 Skill**。
 
