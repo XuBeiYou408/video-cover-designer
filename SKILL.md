@@ -64,8 +64,8 @@ flowchart TD
     StopGate -->|用户回复: 选定方案 + 画幅比例| E["【阶段四】用户决策确认与画幅定制<br>锁定目标方案 + 适配 16:9 / 4:3 / 3:4 (避让时长码)"]
 
     E --> F{"【阶段五】宿主环境能力判定"}
-    F -->|具备生图工具| G["【本地高保真出图】<br>基于原图精准增量渲染成品图"]
-    F -->|纯文本 / 额度耗尽| H["【原图修改通用提示词导出】<br>ChatGPT 网页版 / Midjourney / 即梦 原图垫图通用 Prompt"]
+    F -->|具备生图工具且传参匹配| G["【本地高保真出图】<br>Antigravity: ImagePaths<br>WorkBuddy: upload_media -> imageMediaIds"]
+    F -->|无生图工具 / 接口熔断 (严禁偷跑文生图)| H["【原图修改通用提示词导出】<br>ChatGPT 网页版 / Midjourney / 即梦 原图垫图通用 Prompt"]
 
     classDef stage fill:#1E293B,stroke:#475569,color:#F8FAFC,stroke-width:1.5px;
     classDef decision fill:#0F766E,stroke:#14B8A6,color:#FFFFFF,stroke-width:2px;
@@ -149,7 +149,24 @@ flowchart TD
    - 严禁在同一回复内擅自输出最终提示词或调用生图工具。
 
 ### 阶段二：接收决策与精确交付（下一轮对话触发）
-4. 用户明确回复确认的方案（如“方案A”）和画幅（如“16:9”）后，在下一轮对话中才正式输出最终提示词或触发单次出图。
+4. **决策解析与参数锁定**：用户明确回复确认的方案（如“方案A”）和画幅（如“16:9”）后，锁定设计要素与版面比例；
+5. **跨宿主环境（Antigravity / WorkBuddy / 其它平台）工具适配与生图执行**：
+   - **在 Antigravity 宿主环境中**：
+     直接调用 `generate_image` 工具：
+     - `Prompt`: 对应方案的完整中/英文提示词；
+     - `ImagePaths`: `["<用户原图本地绝对路径>"]`（严格传入原图路径作为参考图垫图）；
+     - `AspectRatio`: 对应画幅（`16:9` / `4:3` / `3:4`）；
+     - `ImageName`: 对应方案简写命名。
+   - **在 WorkBuddy / AI-HIVE / CodeBuddy 宿主环境中**：
+     ⚠️ **重要传参协议（严禁直接传入本地文件路径）**：
+     WorkBuddy 的 `generate_image` 工具接收的是服务端媒体 ID，直接传本地路径会导致参数校验失败！必须严格按两阶段执行：
+     1. **上传原图换取 ID**：优先调用 `upload_media_from_path(path="<用户原图本地绝对路径>")`，获取服务端返回的 `mediaId`；
+     2. **图生图接口提交**：调用 `generate_image(prompt="...", imageMediaIds=[mediaId], ...)` 提交渲染任务；
+     3. 若环境中未提供 `upload_media_from_path`，或底层生图模型未开放图生图路由，**立即触发下方的防降级熔断**。
+   - **🔒 核心防降级熔断铁律（Anti-Degradation Rule · 绝对禁止静默降级）**：
+     **当任何宿主环境的「图生图」接口传参失败或报错时，绝对禁止自动脱钩原图并降级为纯「文生图」偷跑！**
+     因为纯文生图无法锁定人物面部五官与硬件真实结构，必然导致“变脸”和严重虚假幻觉，彻底违背红线一。
+     **合法熔断处理**：若工具调用失败，Agent 必须立即终止生图调用，如实向用户说明接口报错原因，并输出【五、基于原图修改的通用提示词】，指导用户携带原图前往 Midjourney（加 `--iw 2.0`）或即梦进行专业级垫图渲染。
 
 ---
 

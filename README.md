@@ -1,6 +1,6 @@
 # 🎬 Video Cover Designer (科技数码视频封面设计引擎)
 
-这是一个为 Antigravity / Claude Code / Cursor / Agent 生态打造的**科技数码品类、全场景高点击率视频封面生成 Skill**。
+这是一个为 Antigravity / WorkBuddy / Claude Code / Cursor / Agent 生态打造的**科技数码品类、全场景高点击率视频封面生成 Skill**。
 
 系统精准确立并严格支持**四大核心风格**：
 1. **【1. 微机风格】**（真人主持出镜实测与工作流 · 30套样本深度优化）
@@ -52,8 +52,8 @@ flowchart TD
     StopGate -->|用户回复: 选定方案 + 画幅比例| E["【阶段四】用户决策确认与画幅定制<br>锁定目标方案 + 适配 16:9 / 4:3 / 3:4 (避让时长码)"]
 
     E --> F{"【阶段五】宿主环境能力判定"}
-    F -->|具备生图工具| G["【本地高保真出图】<br>基于原图精准增量渲染成品图"]
-    F -->|纯文本 / 额度耗尽| H["【原图修改通用提示词导出】<br>ChatGPT 网页版 / Midjourney / 即梦 原图垫图通用 Prompt"]
+    F -->|具备生图工具且传参匹配| G["【本地高保真出图】<br>Antigravity: ImagePaths<br>WorkBuddy: upload_media -> imageMediaIds"]
+    F -->|无生图工具 / 接口熔断 (严禁偷跑文生图)| H["【原图修改通用提示词导出】<br>ChatGPT 网页版 / Midjourney / 即梦 原图垫图通用 Prompt"]
 
     classDef stage fill:#1E293B,stroke:#475569,color:#F8FAFC,stroke-width:1.5px;
     classDef decision fill:#0F766E,stroke:#14B8A6,color:#FFFFFF,stroke-width:2px;
